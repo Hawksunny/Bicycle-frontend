@@ -8,7 +8,7 @@ import store from "./store";
 import { haks } from "./network/request";
 Vue.prototype.$haks = haks;
 
-// 添加 Vuex 中的 mutaion type 到全局，方便使用
+// 添加 Vuex 中的 mutation type 到全局，方便使用
 import * as types from "@/store/mutaion-types";
 Vue.prototype.$x_types = types;
 

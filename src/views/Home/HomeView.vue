@@ -2,6 +2,7 @@
   <div class="home-view">
     <!-- 顶部导航栏 -->
     <home-nav-bar class="home-nav-bar" />
+    <!-- 切换标签页（暂时未实现） -->
     <tab-control
       class="tab-control"
       :tabs="goodsTypes"
@@ -84,7 +85,7 @@ export default {
         new: { page: 0, list: [] },
         sell: { page: 0, list: [] },
       },
-      goodsTypes: ["流行", "新款", "精选"],
+      goodsTypes: ["默认", "新款", "流行"],
       curGoodsType: "pop",
       isBackTopShow: false,
       isGoodsLoading: false,
@@ -203,6 +204,10 @@ export default {
   position: relative;
   height: 100vh;
 }
+.home-nav-bar {
+  position: relative;
+  z-index: 10;
+}
 .scroll-wrapper {
   position: absolute;
   top: 44px;
@@ -213,6 +218,7 @@ export default {
 }
 .tab-control {
   position: relative;
+  top: -1px;
   z-index: 9;
 }
 .pullup-tips {

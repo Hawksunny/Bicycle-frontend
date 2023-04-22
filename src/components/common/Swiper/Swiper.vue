@@ -252,7 +252,7 @@ export default {
   width: 8px;
   height: 8px;
   border-radius: 4px;
-  background-color: #fff;
+  background-color: #eee;
   line-height: 8px;
   text-align: center;
   font-size: 12px;
@@ -260,6 +260,6 @@ export default {
 }
 
 .indi-item.active {
-  background-color: rgba(212, 62, 46, 1);
+  background-color: #ffa900;
 }
 </style>

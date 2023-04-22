@@ -11,6 +11,7 @@
         {{ statusIcon }}
       </i>
       <span class="now-status info-item">{{ nowStatus }}</span>
+      <span class="bid info-item">BID: {{ bid }}</span>
     </div>
     <!-- 单车基本信息 -->
     <div class="base-info">
@@ -40,6 +41,9 @@ export default {
     },
   },
   computed: {
+    bid() {
+      return this.bikeInfo.id;
+    },
     brand() {
       return this.bikeInfo.brand;
     },
@@ -105,7 +109,14 @@ export default {
   padding: 0 0 1rem;
 }
 .info-item {
+  font-size: 1rem;
   padding-right: 0.4rem;
+}
+.bid {
+  float: right;
+  position: relative;
+  font-size: .8rem;
+  bottom: .3em;
 }
 .now-status {
   font-size: 1rem;
@@ -126,7 +137,7 @@ export default {
   display: flex;
   justify-content: space-between;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid rgba(150, 150, 150, 0.2);
+  /* border-bottom: 1px solid rgba(150, 150, 150, 0.2); */
 }
 .base-info>ul>li {
   font-size: 0.8rem;

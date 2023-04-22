@@ -58,27 +58,29 @@ export default {
 .top {
   font-size: 1.5rem;
   padding: .5em .5em .5em .5em;
+  /* text-align: center; */
 }
 .top img {
   width: 1.8em;
   height: 1.8em;
 }
 .top span {
-  margin-left: 0.5em;
-  letter-spacing: .5em;
+  margin-left: .5em;
+  letter-spacing: .1em;
   position: relative;
   top: .2em;
   font-weight: 400;
   font-size: 1em;
-  margin-left: .8em;
+  margin-left: .5em;
   text-align: center;
 }
 .middle {
   display: flex;
   text-align: center;
   padding: 1em .5em;
+  margin: .5em .8em 1em .8em;
   background-color: #f9f9f9;
-  border-radius: .2em;
+  border-radius: 1em;
 }
 .middle .city {
   flex: 1;

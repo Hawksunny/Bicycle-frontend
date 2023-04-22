@@ -9,7 +9,14 @@
     <div class="info">
       <p class="sl-overflow">{{ title }}</p>
       <span class="type">{{ type }}</span>
-      <span class="status">{{ status }}</span>
+      <span class="status">{{ bid }}</span>
+      <span v-if="status === 1" style="font-size: 0.5rem; color: green"
+        >空闲</span
+      >
+      <span v-else-if="status === 0" style="font-size: 0.5rem; color: red"
+        >占用</span
+      >
+      <span v-else style="font-size: 0.5rem; color: orange">维修</span>
     </div>
   </div>
 </template>
@@ -28,9 +35,10 @@ export default {
   data() {
     return {
       imgLink: "",
-      title: this.goodsItem.brand + "-" + this.goodsItem.color,
+      title: this.goodsItem.brand + " - " + this.goodsItem.color,
       type: this.goodsItem.type,
       status: this.goodsItem.status,
+      bid: this.goodsItem.id,
     };
   },
   methods: {
@@ -79,6 +87,7 @@ export default {
 .status {
   position: relative;
   padding-left: 1.2em;
+  margin-right: .5rem;
 }
 
 .status::before {

@@ -26,6 +26,7 @@ export default {
   width: 100vw;
   height: 100vh;
 }
+
 #my-tab-bar {
   position: fixed;
   bottom: 0;
