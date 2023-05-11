@@ -11,7 +11,11 @@ export function haks(config) {
   instance.interceptors.request.use(
     (conf) => {
       // 2.1. 请求成功会触发此函数
-      return conf;
+      // 自定义请求头Token字段
+      let headers = {
+        "Token": localStorage.getItem("token"),
+      }
+      return {...conf, headers};
     },
     (err) => {
       // 2.2. 请求失败会触发此函数

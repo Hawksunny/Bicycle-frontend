@@ -4,11 +4,26 @@
       <p class="hint">用户未登陆，请登陆或注册~</p>
       <button class="btn" @click="showLogin = true">登陆/注册</button>
     </div>
-    <div v-else class="has-log">用户信息</div>
+    <div v-else class="has-log">
+      <h2>欢迎，{{loginUser.username}}</h2>
+      <div class="label">
+        <span>权限：</span>
+        <span v-if="loginUser.isStaff" style="color:orangered;">管理员</span>
+        <span v-else style="color:lawngreen;">用户</span>
+        <span style="margin-left: 4rem;">登陆时间：{{loginTime}}</span>
+      </div>
+      <ul>
+        <li>个人信息<i class="right-arrow"></i></li>
+        <li v-if="isRoot">用户管理<i class="right-arrow"></i></li>
+        <li v-if="isRoot">单车管理<i class="right-arrow"></i></li>
+        <li v-if="isRoot">订单管理<i class="right-arrow"></i></li>
+      </ul>
+    </div>
+
     <van-dialog v-model="showLogin" title="用户登陆"
                 show-cancel-button
                 confirm-button-text="提交"
-                @confirm="login"
+                :beforeClose="login"
     >
       <van-form>
         <van-field
@@ -36,6 +51,7 @@
 
 <script>
 import {userLogin} from "network/profile";
+import {Toast} from "vant";
 
 export default {
   name: "ProfileView",
@@ -45,14 +61,38 @@ export default {
       showLogin: false,
       username: null,
       password: null,
+      loginUser: {},
+      isRoot: false,
+    }
+  },
+  computed: {
+    loginTime() {
+      return new Date().toLocaleString();
     }
   },
   methods: {
-    login() {
-      userLogin(this.username, this.password).then(res => {
-        console.log(res);
-      })
-    }
+    login(action, done) {
+      if (action === "confirm") {
+        userLogin(this.username, this.password).then(res => {
+          console.log(res);
+          if (res.success) {
+            Toast("登陆成功喵～");
+            this.isLogin = true;
+            this.loginUser = res.result;
+            this.isRoot = this.loginUser.isStaff;
+            // 把token存进localStorage
+            localStorage.setItem("token", res.msg);
+            console.log(this.loginUser);
+          } else {
+            Toast(res.msg);
+          }
+          done();
+        });
+      } else {
+        done();
+      }
+    },
+
   }
 };
 </script>
@@ -89,5 +129,56 @@ export default {
 }
 .not-log>.btn:active {
   background-color: rgba(255, 184, 59, 1);
+}
+.has-log>h2 {
+  margin: 1rem 0;
+  color: #ffa900;
+  text-align: center;
+  text-shadow: 1px 1px 2px #ffb900;
+}
+.has-log>.label {
+  text-align: justify;
+  font-size: .6rem;
+  margin: .5rem 0;
+  padding: 0 2rem;
+  background-color: #eeeeee;
+  line-height: 2rem;
+}
+.has-log>ul {
+  font-size: 1.2rem;
+  width: 100vw;
+  margin: 2rem 0;
+  overflow: scroll;
+}
+.has-log>ul>li {
+  color: #666666;
+  background-color: #f0f0f0;
+  border: 1px solid #ffa900;
+  border-radius: .5em;
+  margin: .5em 2rem;
+  cursor: pointer;
+  padding: .3em .5em;
+  position: relative;
+  transition: all .1s ease-in-out;
+}
+.has-log>ul>li:hover {
+  font-weight: bolder;
+  color: #f9f9f9;
+  background-color: #ffa900;
+}
+.has-log>ul>li:active {
+  background-color: #ffb900;
+}
+.right-arrow {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border-top: 3px solid #ffa900;
+  border-right: 3px solid #ffa900;
+  border-bottom: 9px solid transparent;
+  border-left: 9px solid transparent;
+  transform: rotate(45deg) translateY(-50%);
 }
 </style>
