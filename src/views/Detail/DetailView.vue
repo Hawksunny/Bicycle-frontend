@@ -109,28 +109,13 @@ import {
   getStationInfo,
   addOrder,
   updateBikeInfo,
-  addPayment,
-  getOrderInfo,
+  // addPayment,
+  // getOrderInfo,
 } from "network/detail.js";
 
 import Vue from "vue";
-import { Button } from "vant";
-import { Form } from "vant";
-import { Field } from "vant";
-import { CellGroup } from "vant";
-import { Popup } from "vant";
 import { Toast } from "vant";
-import { DatetimePicker } from "vant";
-import { SubmitBar } from "vant";
-
-Vue.use(SubmitBar);
-Vue.use(DatetimePicker);
 Vue.use(Toast);
-Vue.use(Popup);
-Vue.use(CellGroup);
-Vue.use(Button);
-Vue.use(Form);
-Vue.use(Field);
 
 export default {
   name: "DetailView",

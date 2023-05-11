@@ -4,6 +4,14 @@ const routes = [
     redirect: "/home",
   },
   {
+    path: "/login",
+    name: "login",
+    component: () => import("@/views/LoginView"),
+    meta: {
+      title: "登陆界面-共享单车",
+    },
+  },
+  {
     path: "/detail/:iid",
     name: "detail",
     component: () => import("@/views/Detail/DetailView"),
