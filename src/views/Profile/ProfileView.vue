@@ -1,26 +1,28 @@
 <template>
   <div class="profile-view">
     <div v-if="!isLogin" class="not-log">
-      <p class="hint">用户未登陆，请登陆或注册~</p>
-      <button class="btn" @click="showLogin = true">登陆/注册</button>
+      <p class="hint">用户未登录，请登录或注册~</p>
+      <button class="btn" @click="showLogin = true">登录/注册</button>
     </div>
     <div v-else class="has-log">
+      <van-button round type="danger" class="logout-btn" @click="logout">登出</van-button>
       <h2>欢迎，{{loginUser.username}}</h2>
       <div class="label">
         <span>权限：</span>
         <span v-if="loginUser.isStaff" style="color:orangered;">管理员</span>
         <span v-else style="color:lawngreen;">用户</span>
-        <span style="margin-left: 4rem;">登陆时间：{{loginTime}}</span>
+        <span style="margin-left: 4rem;">登录时间：{{loginTime}}</span>
       </div>
       <ul>
-        <li>个人信息<i class="right-arrow"></i></li>
-        <li v-if="isRoot">用户管理<i class="right-arrow"></i></li>
-        <li v-if="isRoot">单车管理<i class="right-arrow"></i></li>
-        <li v-if="isRoot">订单管理<i class="right-arrow"></i></li>
+        <li @click="$router.push('/userInfo')">个人信息<i class="right-arrow"></i></li>
+        <li v-if="isRoot" @click="$router.push('/userManage')">用户管理<i class="right-arrow"></i></li>
+        <li v-if="isRoot" @click="$router.push('/bikeManage')">单车管理<i class="right-arrow"></i></li>
+        <li v-if="isRoot" @click="$router.push('/orderManage')">订单管理<i class="right-arrow"></i></li>
       </ul>
     </div>
 
-    <van-dialog v-model="showLogin" title="用户登陆"
+    <van-dialog v-model="showLogin"
+                title="用户登录"
                 show-cancel-button
                 confirm-button-text="提交"
                 :beforeClose="login"
@@ -50,7 +52,7 @@
 </template>
 
 <script>
-import {userLogin} from "network/profile";
+import {isTokenExpired, userLogin} from "network/profile";
 import {Toast} from "vant";
 
 export default {
@@ -62,12 +64,14 @@ export default {
       username: null,
       password: null,
       loginUser: {},
-      isRoot: false,
     }
   },
   computed: {
     loginTime() {
       return new Date().toLocaleString();
+    },
+    isRoot() {
+      return this.loginUser.isStaff;
     }
   },
   methods: {
@@ -76,13 +80,13 @@ export default {
         userLogin(this.username, this.password).then(res => {
           console.log(res);
           if (res.success) {
-            Toast("登陆成功喵～");
+            Toast("登录成功喵～");
             this.isLogin = true;
             this.loginUser = res.result;
             this.isRoot = this.loginUser.isStaff;
-            // 把token存进localStorage
+            // 把token和用户信息存进localStorage
             localStorage.setItem("token", res.msg);
-            console.log(this.loginUser);
+            localStorage.setItem("loginUser", JSON.stringify(this.loginUser));
           } else {
             Toast(res.msg);
           }
@@ -92,7 +96,28 @@ export default {
         done();
       }
     },
+    logout() {
+      this.isLogin = false;
+      Toast(`再见，${this.loginUser.username}~`);
+      localStorage.removeItem("token");
+      localStorage.removeItem("loginUser");
+    },
 
+  },
+  created() {
+    let token = localStorage.getItem("token");
+    if (token !== null) {
+      isTokenExpired(token).then(res => {
+        if (res.success) {
+          this.isLogin = true;
+          this.loginUser = JSON.parse(localStorage.getItem("loginUser"));
+        } else {
+          this.isLogin = false;
+          localStorage.removeItem("token");
+          localStorage.removeItem("loginUser");
+        }
+      })
+    } else this.isLogin = false;
   }
 };
 </script>
@@ -131,9 +156,9 @@ export default {
   background-color: rgba(255, 184, 59, 1);
 }
 .has-log>h2 {
-  margin: 1rem 0;
+  margin: 1rem 0 1rem 2rem;
   color: #ffa900;
-  text-align: center;
+  text-align: left;
   text-shadow: 1px 1px 2px #ffb900;
 }
 .has-log>.label {
@@ -145,7 +170,7 @@ export default {
   line-height: 2rem;
 }
 .has-log>ul {
-  font-size: 1.2rem;
+  font-size: 1rem;
   width: 100vw;
   margin: 2rem 0;
   overflow: scroll;
@@ -153,11 +178,11 @@ export default {
 .has-log>ul>li {
   color: #666666;
   background-color: #f0f0f0;
-  border: 1px solid #ffa900;
+  /*border: 1px solid #ffa900;*/
   border-radius: .5em;
   margin: .5em 2rem;
   cursor: pointer;
-  padding: .3em .5em;
+  padding: .3em 1em;
   position: relative;
   transition: all .1s ease-in-out;
 }
@@ -180,5 +205,13 @@ export default {
   border-bottom: 9px solid transparent;
   border-left: 9px solid transparent;
   transform: rotate(45deg) translateY(-50%);
+}
+.logout-btn {
+  position: fixed;
+  top: 16px;
+  right: 1rem;
+  width: 4rem;
+  height: 2rem;
+  line-height: 2rem;
 }
 </style>

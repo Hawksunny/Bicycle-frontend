@@ -30,6 +30,7 @@ import {
   DatetimePicker,
   SubmitBar,
   Dialog,
+  NavBar,
 } from "vant";
 
 Vue.use(SubmitBar)
@@ -40,6 +41,7 @@ Vue.use(SubmitBar)
   .use(Form)
   .use(Field)
   .use(Dialog)
+  .use(NavBar)
 
 /* 创建 Vue 实例 */
 new Vue({

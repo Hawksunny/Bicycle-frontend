@@ -4,11 +4,43 @@ const routes = [
     redirect: "/profile",
   },
   {
+    path: "/userInfo",
+    name: "userInfo",
+    component: () => import("@/views/Profile/UserInfo"),
+    meta: {
+      title: "用户信息-共享单车",
+    }
+  },
+  {
+    path: "/userManage",
+    name: "userManage",
+    component: () => import("@/views/Profile/UserManage"),
+    meta: {
+      title: "用户管理-共享单车",
+    }
+  },
+  {
+    path: "/bikeManage",
+    name: "bikeManage",
+    component: () => import("@/views/Profile/BikeManage"),
+    meta: {
+      title: "单车管理-共享单车",
+    }
+  },
+  {
+    path: "/orderManage",
+    name: "orderManage",
+    component: () => import("@/views/Profile/OrderManage"),
+    meta: {
+      title: "订单管理-共享单车",
+    }
+  },
+  {
     path: "/login",
     name: "login",
     component: () => import("@/views/LoginView"),
     meta: {
-      title: "登陆界面-共享单车",
+      title: "登录界面-共享单车",
     },
   },
   {

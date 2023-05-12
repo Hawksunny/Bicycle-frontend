@@ -10,3 +10,13 @@ export function userLogin(username, password) {
     },
   })
 }
+
+export function isTokenExpired(token) {
+  return haks({
+    url: "/user/auth",
+    method: "get",
+    params: {
+      token,
+    }
+  })
+}
