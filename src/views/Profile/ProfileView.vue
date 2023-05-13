@@ -6,19 +6,22 @@
     </div>
     <div v-else class="has-log">
       <van-button round type="danger" class="logout-btn" @click="logout">登出</van-button>
+      <div class="placeholder"></div>
       <h2>欢迎，{{loginUser.username}}</h2>
       <div class="label">
         <span>权限：</span>
         <span v-if="loginUser.isStaff" style="color:orangered;">管理员</span>
-        <span v-else style="color:lawngreen;">用户</span>
+        <span v-else style="color:green;">用户</span>
         <span style="margin-left: 4rem;">登录时间：{{loginTime}}</span>
       </div>
-      <ul>
-        <li @click="$router.push('/userInfo')">个人信息<i class="right-arrow"></i></li>
-        <li v-if="isRoot" @click="$router.push('/userManage')">用户管理<i class="right-arrow"></i></li>
-        <li v-if="isRoot" @click="$router.push('/bikeManage')">单车管理<i class="right-arrow"></i></li>
-        <li v-if="isRoot" @click="$router.push('/orderManage')">订单管理<i class="right-arrow"></i></li>
-      </ul>
+      <my-scroll class="scroll-wrapper">
+        <ul>
+          <li @click="$router.push('/userInfo')">个人信息<i class="right-arrow"></i></li>
+          <li v-if="isRoot" @click="$router.push('/userManage')">用户管理<i class="right-arrow"></i></li>
+          <li v-if="isRoot" @click="$router.push('/bikeManage')">单车管理<i class="right-arrow"></i></li>
+          <li @click="$router.push('/order')">订单管理<i class="right-arrow"></i></li>
+        </ul>
+      </my-scroll>
     </div>
 
     <van-dialog v-model="showLogin"
@@ -83,7 +86,6 @@ export default {
             Toast("登录成功喵～");
             this.isLogin = true;
             this.loginUser = res.result;
-            this.isRoot = this.loginUser.isStaff;
             // 把token和用户信息存进localStorage
             localStorage.setItem("token", res.msg);
             localStorage.setItem("loginUser", JSON.stringify(this.loginUser));
@@ -155,8 +157,17 @@ export default {
 .not-log>.btn:active {
   background-color: rgba(255, 184, 59, 1);
 }
+.placeholder {
+  height: 60px;
+  width: 100vw;
+}
 .has-log>h2 {
-  margin: 1rem 0 1rem 2rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 0 0 0 2rem;
+  height: 60px;
+  line-height: 60px;
   color: #ffa900;
   text-align: left;
   text-shadow: 1px 1px 2px #ffb900;
@@ -164,18 +175,17 @@ export default {
 .has-log>.label {
   text-align: justify;
   font-size: .6rem;
-  margin: .5rem 0;
   padding: 0 2rem;
   background-color: #eeeeee;
   line-height: 2rem;
 }
-.has-log>ul {
+.has-log ul {
   font-size: 1rem;
   width: 100vw;
   margin: 2rem 0;
   overflow: scroll;
 }
-.has-log>ul>li {
+.has-log ul>li {
   color: #666666;
   background-color: #f0f0f0;
   /*border: 1px solid #ffa900;*/
@@ -213,5 +223,15 @@ export default {
   width: 4rem;
   height: 2rem;
   line-height: 2rem;
+}
+.scroll-wrapper {
+  position: absolute;
+  top: calc(60px + 2rem);
+  bottom: 49px;
+  left: 0;
+  right: 0;
+  width: 100vw;
+  height: calc(100vh - 49px - 60px - 2rem);
+  overflow: hidden;
 }
 </style>

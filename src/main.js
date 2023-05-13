@@ -26,22 +26,28 @@ import {
   Form,
   Field,
   CellGroup,
+  Cell,
   Popup,
   DatetimePicker,
   SubmitBar,
   Dialog,
   NavBar,
+  Popover,
+  Empty,
 } from "vant";
 
 Vue.use(SubmitBar)
   .use(DatetimePicker)
   .use(Popup)
   .use(CellGroup)
+  .use(Cell)
   .use(Button)
   .use(Form)
   .use(Field)
   .use(Dialog)
   .use(NavBar)
+  .use(Popover)
+  .use(Empty)
 
 /* 创建 Vue 实例 */
 new Vue({

@@ -28,14 +28,6 @@ const routes = [
     }
   },
   {
-    path: "/orderManage",
-    name: "orderManage",
-    component: () => import("@/views/Profile/OrderManage"),
-    meta: {
-      title: "订单管理-共享单车",
-    }
-  },
-  {
     path: "/login",
     name: "login",
     component: () => import("@/views/LoginView"),
