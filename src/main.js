@@ -34,6 +34,12 @@ import {
   NavBar,
   Popover,
   Empty,
+  List,
+  PullRefresh,
+  ContactCard,
+  Switch,
+  Row,
+  Col,
 } from "vant";
 
 Vue.use(SubmitBar)
@@ -48,6 +54,12 @@ Vue.use(SubmitBar)
   .use(NavBar)
   .use(Popover)
   .use(Empty)
+  .use(List)
+  .use(PullRefresh)
+  .use(ContactCard)
+  .use(Switch)
+  .use(Row)
+  .use(Col)
 
 /* 创建 Vue 实例 */
 new Vue({

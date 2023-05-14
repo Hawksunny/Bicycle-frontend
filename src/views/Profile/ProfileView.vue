@@ -32,11 +32,20 @@
     >
       <van-form>
         <van-field
-            v-model="username"
-            name="用户名"
-            label="用户名"
-            placeholder="用户名"
-            :rules="[{ required: true, message: '请填写用户名' }]"
+            v-model="uid"
+            name="UID"
+            label="UID"
+            placeholder="UID"
+            :rules="[
+              {
+                required: true,
+                message: '请填写UID'
+              },
+              {
+                pattern,
+                message: '仅数字且至少一位'
+              }
+            ]"
         />
         <van-field
             v-model="password"
@@ -64,9 +73,10 @@ export default {
     return {
       isLogin: false,
       showLogin: false,
-      username: null,
+      uid: null,
       password: null,
       loginUser: {},
+      pattern: /\d+/,
     }
   },
   computed: {
@@ -80,7 +90,7 @@ export default {
   methods: {
     login(action, done) {
       if (action === "confirm") {
-        userLogin(this.username, this.password).then(res => {
+        userLogin(parseInt(this.uid), this.password).then(res => {
           console.log(res);
           if (res.success) {
             Toast("登录成功喵～");

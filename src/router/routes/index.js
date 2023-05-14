@@ -25,15 +25,7 @@ const routes = [
     component: () => import("@/views/Profile/BikeManage"),
     meta: {
       title: "单车管理-共享单车",
-    }
-  },
-  {
-    path: "/login",
-    name: "login",
-    component: () => import("@/views/LoginView"),
-    meta: {
-      title: "登录界面-共享单车",
-    },
+   }
   },
   {
     path: "/detail/:iid",
