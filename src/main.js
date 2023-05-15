@@ -40,6 +40,11 @@ import {
   Switch,
   Row,
   Col,
+  Card,
+  Icon,
+  Image as VanImage,
+  Lazyload,
+  ImagePreview,
 } from "vant";
 
 Vue.use(SubmitBar)
@@ -60,6 +65,11 @@ Vue.use(SubmitBar)
   .use(Switch)
   .use(Row)
   .use(Col)
+  .use(Card)
+  .use(Icon)
+  .use(VanImage)
+  .use(Lazyload)
+  .use(ImagePreview)
 
 /* 创建 Vue 实例 */
 new Vue({

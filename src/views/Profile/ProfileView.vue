@@ -7,7 +7,15 @@
     <div v-else class="has-log">
       <van-button round type="danger" class="logout-btn" @click="logout">登出</van-button>
       <div class="placeholder"></div>
-      <h2>欢迎，{{loginUser.username}}</h2>
+      <h2><van-image
+          width="2rem"
+          height="2rem"
+          lazy-load
+          round
+          src="https://img01.yzcdn.cn/vant/cat.jpeg"
+          style="vertical-align: middle;"
+          @click="imagePreview"
+      /><span>{{loginUser.username}}</span></h2>
       <div class="label">
         <span>权限：</span>
         <span v-if="loginUser.isStaff" style="color:orangered;">管理员</span>
@@ -65,7 +73,7 @@
 
 <script>
 import {isTokenExpired, userLogin} from "network/profile";
-import {Toast} from "vant";
+import {Toast, ImagePreview} from "vant";
 
 export default {
   name: "ProfileView",
@@ -114,7 +122,9 @@ export default {
       localStorage.removeItem("token");
       localStorage.removeItem("loginUser");
     },
-
+    imagePreview() {
+      ImagePreview(["https://img01.yzcdn.cn/vant/cat.jpeg"]);
+    },
   },
   created() {
     let token = localStorage.getItem("token");
@@ -178,9 +188,14 @@ export default {
   margin: 0 0 0 2rem;
   height: 60px;
   line-height: 60px;
-  color: #ffa900;
   text-align: left;
+}
+.has-log>h2>span {
+  color: #ffa900;
   text-shadow: 1px 1px 2px #ffb900;
+  margin-left: .8rem;
+  position: relative;
+  top: 3px;
 }
 .has-log>.label {
   text-align: justify;

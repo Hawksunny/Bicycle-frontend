@@ -19,7 +19,8 @@
         finished-text="没有更多了"
         @load="onLoad"
     >
-      <van-contact-card type="add" @click="onAdd" add-text="添加用户" />
+      <van-contact-card class="add_user-card" type="add" @click="onAdd" add-text="添加用户" />
+      <div class="placeholder" style="height: 5rem;"></div>
       <div v-for="item in list" :key="parseInt(item.uid)">
         <van-cell title="UID" :value="item.uid" :border="false" :center="true" />
         <van-contact-card
@@ -32,24 +33,26 @@
     </van-list>
   </van-pull-refresh>
 
+  <div class="placeholder" style="height: 3rem;"></div>
+
   <van-popup v-model="showUserAdd" round :style="{width:'75%'}">
     <van-form @submit="onSubmit">
       <van-field
-          v-model="user.username"
+          v-model="newUser.username"
           name="用户名"
           label="用户名"
           placeholder="用户名"
           :rules="[{ required: true, message: '请填写用户名' }]"
       />
       <van-field
-          v-model="user.telephone"
+          v-model="newUser.telephone"
           name="电话"
           label="电话"
           placeholder="电话"
           :rules="[{ required: true, message: '请填写电话' }]"
       />
       <van-field
-          v-model="user.password"
+          v-model="newUser.password"
           type="password"
           name="密码"
           label="密码"
@@ -58,7 +61,7 @@
       />
       <van-cell center title="是否为管理员">
         <template #right-icon>
-          <van-switch v-model="user.isStaff" size="24" />
+          <van-switch v-model="newUser.isStaff" size="24" />
         </template>
       </van-cell>
       <div style="margin: 16px;">
@@ -140,7 +143,15 @@ export default {
         password: null,
         telephone: null,
         isStaff: false,
-      }
+      },
+      newUser: {
+        username: null,
+        password: null,
+        telephone: null,
+        isStaff: false,
+      },
+      notShowLoadToast: false,
+      notShowRefreshToast: false,
     };
   },
   methods: {
@@ -156,7 +167,12 @@ export default {
 
         this.list = [...this.list, ...res.result];
         this.loading = false;
-        Toast("加载成功")
+
+        if (this.notShowLoadToast) {
+          this.notShowLoadToast = false;
+        } else {
+          Toast("加载成功");
+        }
 
         if (res.result.length === 0) {
           this.finished = true;
@@ -172,13 +188,23 @@ export default {
       // 将 loading 设置为 true，表示处于加载状态
       this.loading = true;
       await this.onLoad();
-      Toast("刷新成功")
+
+      if (this.notShowRefreshToast) {
+        this.notShowRefreshToast = false;
+      } else {
+        this.notShowLoadToast = true;
+        Toast("刷新成功");
+      }
     },
     onAdd() {
       this.showUserAdd = true;
+      this.newUser.username = null;
+      this.newUser.telephone = null;
+      this.newUser.password = null;
+      this.newUser.isStaff = false;
     },
     onSubmit() {
-      addUser(this.user).then(res => {
+      addUser(this.newUser).then(res => {
         Toast(res.msg);
       });
       this.showUserAdd = false;
@@ -200,6 +226,8 @@ export default {
         message: '确认删除？该操作不可逆！',
       }).then(() => {
         deleteUser(parseInt(this.user.uid)).then(res => {
+          this.notShowLoadToast = true;
+          this.notShowRefreshToast = true;
           Toast(res.msg);
           this.showUserEdit = false;
           this.list = [];
@@ -214,4 +242,9 @@ export default {
 </script>
 
 <style scoped>
+.add_user-card {
+  position: fixed;
+  top: 46px;
+  z-index: 9;
+}
 </style>
