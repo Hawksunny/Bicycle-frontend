@@ -2,14 +2,14 @@ import { haks } from "./request";
 
 export function getStationInfo(id) {
   return haks({
-    url: "/station/list",
+    url: "/station/list_by_id",
     params: { id },
   });
 }
 
 export function getBikeInfo(id) {
   return haks({
-    url: "/bike/list",
+    url: "/bike/list_by_id",
     params: { id },
   });
 }

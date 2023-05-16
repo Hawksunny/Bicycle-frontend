@@ -45,6 +45,9 @@ import {
   Image as VanImage,
   Lazyload,
   ImagePreview,
+  Tag,
+  Radio,
+  RadioGroup,
 } from "vant";
 
 Vue.use(SubmitBar)
@@ -70,6 +73,9 @@ Vue.use(SubmitBar)
   .use(VanImage)
   .use(Lazyload)
   .use(ImagePreview)
+  .use(Tag)
+  .use(Radio)
+  .use(RadioGroup)
 
 /* 创建 Vue 实例 */
 new Vue({

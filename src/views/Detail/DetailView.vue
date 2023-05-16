@@ -192,13 +192,13 @@ export default {
     this.iid = this.$route.params.iid;
     // 获取当前单车信息和对应站点信息
     getBikeInfo(this.iid)
-      .then((res) => {
-        this.bikeInfo = res.result[0];
+      .then(res => {
+        this.bikeInfo = res.result;
         this.sid = this.bikeInfo.fromStation;
         return getStationInfo(this.sid);
       })
-      .then((res) => {
-        this.stationInfo = res.result[0];
+      .then(res => {
+        this.stationInfo = res.result;
       });
   },
 

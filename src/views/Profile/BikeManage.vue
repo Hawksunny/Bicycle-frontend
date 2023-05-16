@@ -36,21 +36,6 @@
             @click="onStationClick(item)"
         />
       </van-cell-group>
-<!--      <van-card-->
-<!--          v-for="item in list"-->
-<!--          :key="item.id"-->
-<!--          :desc="描述信息"-->
-<!--          :title="商品标题"-->
-<!--          thumb="~assets/icon/placeholder2.png"-->
-<!--      >-->
-<!--        <template #tags>-->
-<!--          <van-tag plain type="danger">{{}}</van-tag>-->
-<!--        </template>-->
-<!--        <template #footer>-->
-<!--          <van-button size="mini">修改</van-button>-->
-<!--          <van-button size="mini">删除</van-button>-->
-<!--        </template>-->
-<!--      </van-card>-->
     </van-list>
   </van-pull-refresh>
 
@@ -122,6 +107,7 @@
 <script>
 import {addStation, deleteStation, getBikeListByStationId, getStationList, updateStation} from "network/profile";
 import {Dialog, Toast} from "vant";
+import * as types from "@/store/mutaion-types";
 
 export default {
   name: "BikeManage",
@@ -133,13 +119,11 @@ export default {
       error: false,
 
       stationList: [],
-      curStation: {},
       newStation: {
         stationName: null,
         address: null,
         capacity: 0,
       },
-      bikeList: [],
 
       showStationInfo: false,
       showAddStationWizard: false,
@@ -149,6 +133,11 @@ export default {
 
       notShowLoadToast: false,
       notShowRefreshToast: false,
+    }
+  },
+  computed: {
+    curStation() {
+      return this.$store.state.curStation;
     }
   },
   methods: {
@@ -194,7 +183,10 @@ export default {
       }
     },
     onStationClick(curStation) {
-      this.curStation = curStation;
+      this.$store.commit({
+        type: types.CUR_STATION_INIT,
+        curStation,
+      })
       this.showStationInfo = true;
     },
     addStation() {
@@ -244,12 +236,19 @@ export default {
     toBikes() {
       getBikeListByStationId(this.curStation.id).then(res => {
         if (res.success) {
-          console.log(res);
-          this.curStation.capacity = res.result.length;
+          this.$store.commit({
+            type: types.BIKE_LIST_INIT,
+            bikeList: res.result,
+          });
+          this.$store.commit({
+            type: types.CUR_STATION_INIT,
+            curStation: this.curStation,
+          });
+          this.$router.push(`/bikesInStation/${this.curStation.id}`);
         }
       })
     },
-  }
+  },
 }
 </script>
 

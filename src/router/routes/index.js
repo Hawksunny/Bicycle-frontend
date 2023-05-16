@@ -20,6 +20,14 @@ const routes = [
     }
   },
   {
+    path: "/bikesInStation/:sid",
+    name: "bikesInStation",
+    component: () => import("@/views/Profile/BikeList"),
+    meta: {
+      title: "站内单车-共享单车",
+    },
+  },
+  {
     path: "/bikeManage",
     name: "bikeManage",
     component: () => import("@/views/Profile/BikeManage"),

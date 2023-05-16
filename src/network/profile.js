@@ -135,3 +135,33 @@ export function getBikeListByStationId(sid) {
     }
   })
 }
+
+export function addBike(bike) {
+  return haks({
+    url: "/bike/add",
+    method: "post",
+    data: {
+      ...bike,
+    }
+  })
+}
+
+export function updateBikeInfo(bike) {
+  return haks({
+    url: "/bike/update",
+    method: "post",
+    data: {
+      ...bike,
+    }
+  })
+}
+
+export function deleteBike(id) {
+  return haks({
+    url: "/bike/delete",
+    method: "get",
+    params: {
+      id,
+    }
+  })
+}

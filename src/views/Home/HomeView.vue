@@ -20,15 +20,6 @@
       @scroll="contentScroll"
       @pullingUp="loadMoreGoods"
     >
-      <!-- 顶部轮播图 -->
-      <!-- <home-swiper :banners="banners" /> -->
-
-      <!-- 推荐页面 -->
-      <!-- <recommends-view :recommends="recommends" /> -->
-
-      <!-- 本周流行 -->
-      <!-- <feature-view /> -->
-      
       <tab-control
         class="tab-control"
         ref="tab-control"
@@ -52,9 +43,6 @@
 
 <script>
 import HomeNavBar from "./childCmps/HomeNavBar.vue";
-// import HomeSwiper from "./childCmps/HomeSwiper.vue";
-// import RecommendsView from "./childCmps/RecommendsView.vue";
-// import FeatureView from "./childCmps/FeatureView.vue";
 
 import TabControl from "components/content/TabControl.vue";
 import { GoodsList } from "components/content/GoodsCard";
@@ -68,9 +56,6 @@ export default {
 
   components: {
     HomeNavBar,
-    // HomeSwiper,
-    // RecommendsView,
-    // FeatureView,
     TabControl,
     GoodsList,
     BackTop,
@@ -85,7 +70,7 @@ export default {
         new: { page: 0, list: [] },
         sell: { page: 0, list: [] },
       },
-      goodsTypes: ["默认", "新款", "流行"],
+      goodsTypes: ["推荐", "最近", "收藏"],
       curGoodsType: "pop",
       isBackTopShow: false,
       isGoodsLoading: false,
@@ -101,13 +86,6 @@ export default {
   },
 
   created() {
-    // // 1. 获取主页界面相关的数据
-    // this.getMultiData();
-    // // 2. 获取主页初始化商品列表
-    // this.getGoods("pop");
-    // this.getGoods("new");
-    // this.getGoods("sell");
-
     this.getSomeBike();
   },
 
@@ -161,35 +139,10 @@ export default {
       this.$refs.scroll.scrollTo(0, 0);
     },
     loadMoreGoods() {
-      // console.log(this.isGoodsLoading);
-      // this.isGoodsLoading = true;
-      // console.log(this.isGoodsLoading);
-      // if (this.isGoodsLoading) {
-      //   new Promise((resolve) => {
-      //     this.getGoods(this.curGoodsType);
-      //     resolve();
-      //   }).then(() => {
-      //     this.$refs.scroll.finishPullUp();
-      //     this.isGoodsLoading = false;
-      //   });
-      // }
     },
     /**
      * 网络请求相关的方法
      */
-    // getMultiData() {
-    //   getMultiData().then((res) => {
-    //     this.banners = res.data.banner.list;
-    //     this.recommends = res.data.recommend.list;
-    //   });
-    // },
-    // getGoods(type) {
-    //   const page = this.goods[type].page + 1;
-    //   getGoods(type, page).then((res) => {
-    //     this.goods[type].list.push(...res.data.list);
-    //     this.goods[type].page++;
-    //   });
-    // },
     getSomeBike() {
       getBikes().then((res) => {
         this.bikeList.push(...res.result);

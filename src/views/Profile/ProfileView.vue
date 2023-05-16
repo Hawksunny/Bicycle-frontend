@@ -12,7 +12,8 @@
           height="2rem"
           lazy-load
           round
-          src="https://img01.yzcdn.cn/vant/cat.jpeg"
+          fit="cover"
+          src="https://img1.baidu.com/it/u=2132998912,1359357467&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=500"
           style="vertical-align: middle;"
           @click="imagePreview"
       /><span>{{loginUser.username}}</span></h2>
@@ -123,7 +124,7 @@ export default {
       localStorage.removeItem("loginUser");
     },
     imagePreview() {
-      ImagePreview(["https://img01.yzcdn.cn/vant/cat.jpeg"]);
+      ImagePreview(["https://img1.baidu.com/it/u=2132998912,1359357467&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=500"]);
     },
   },
   created() {
