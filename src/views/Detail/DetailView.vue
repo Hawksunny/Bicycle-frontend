@@ -23,7 +23,7 @@
         size="large"
         loading-text="加载中..."
         icon="scan"
-        @click="showForm = true"
+        @click="onRentBtnClick"
         >租它</van-button
       >
     </div>
@@ -37,10 +37,17 @@
               label="租者"
               name="user"
               placeholder="请输入用户ID"
+              disabled
             />
           </van-cell-group>
           <van-cell-group>
-            <van-field v-model="bike" readonly name="bike" label="单车" />
+            <van-field
+              v-model="bike"
+              readonly
+              name="bike"
+              label="单车"
+              disabled
+            />
           </van-cell-group>
           <van-cell-group>
             <van-field
@@ -48,14 +55,14 @@
               name="outStation"
               readonly
               label="出站"
+              disabled
             />
           </van-cell-group>
           <van-cell-group>
             <van-field
-              readonly
               clickable
               name="datetimePicker"
-              :value="backTimeLocal"
+              v-model="backTimeLocal"
               label="归还"
               placeholder="点击选择时间"
               @click="showPicker = true"
@@ -71,13 +78,14 @@
         </div>
       </van-form>
     </van-popup>
+
     <van-popup v-model="showPicker" position="bottom">
       <van-datetime-picker
+        v-model="backTime"
         type="datatime"
         title="请选择归还时间"
         @confirm="onPickerTime"
         @cancel="showPicker = false"
-        v-model="backTime"
       />
     </van-popup>
     <!-- 支付界面 -->
@@ -104,17 +112,11 @@ import DetailSwiper from "./childCmps/DetailSwiper";
 import DetailBikeInfo from "./childCmps/DetailBikeInfo";
 import DetailStationInfo from "./childCmps/DetailStationInfo";
 
-import {
-  getBikeInfo,
-  getStationInfo,
-  addOrder,
-  updateBikeInfo,
-  // addPayment,
-  // getOrderInfo,
-} from "network/detail.js";
+import {addOrder, getBikeInfo, getStationInfo, updateBikeInfo,} from "network/detail.js";
 
 import Vue from "vue";
-import { Toast } from "vant";
+import {Toast} from "vant";
+
 Vue.use(Toast);
 
 export default {
@@ -129,9 +131,8 @@ export default {
 
   data() {
     return {
-      iid: null, // 单车ID
-      sid: null, // 站点ID
-      uid: null, // 用户ID
+      iid: 0, // 单车ID
+      sid: 0, // 站点ID
       backStation: 1, // 归还站点ID， 默认为1
       bikeInfo: {}, // 单车信息
       stationInfo: {}, // 站点信息
@@ -167,6 +168,12 @@ export default {
   },
 
   computed: {
+    uid() {
+      return this.$store.state.uid || localStorage.getItem("uid");
+    },
+    backTimeLocal() {
+      return this.backTime.toLocaleString();
+    },
     bike() {
       return (
         this.bikeInfo.brand +
@@ -178,9 +185,6 @@ export default {
     },
     outStation() {
       return this.stationInfo.address + "-" + this.stationInfo.stationName;
-    },
-    backTimeLocal() {
-      return this.backTime.toLocaleString();
     },
     fee_convert() {
       return Number(this.fee) * 100;
@@ -203,6 +207,13 @@ export default {
   },
 
   methods: {
+    onRentBtnClick() {
+      if (this.bikeInfo.status === 1) {
+        this.showForm = true
+      } else {
+        Toast("车辆被占用或维修, 无法租用");
+      }
+    },
     // 订单提交事件处理函数
     onSubmit() {
       addOrder({
@@ -250,14 +261,6 @@ export default {
       Toast("支付成功！");
       // 修改相应参数和数据库记录
       this.isPayed = true;
-      // this.bikeInfo.status = 0;
-      // updateBikeInfo(this.bikeInfo)
-      //   .then((res) => {
-      //     console.log(res);
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
     },
   },
 };

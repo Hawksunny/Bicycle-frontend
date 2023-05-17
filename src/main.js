@@ -48,6 +48,7 @@ import {
   Tag,
   Radio,
   RadioGroup,
+  SwipeCell,
 } from "vant";
 
 Vue.use(SubmitBar)
@@ -76,6 +77,7 @@ Vue.use(SubmitBar)
   .use(Tag)
   .use(Radio)
   .use(RadioGroup)
+  .use(SwipeCell)
 
 /* 创建 Vue 实例 */
 new Vue({

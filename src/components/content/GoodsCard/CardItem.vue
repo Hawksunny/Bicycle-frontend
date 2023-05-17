@@ -35,11 +35,21 @@ export default {
   data() {
     return {
       imgLink: "",
-      title: this.goodsItem.brand + " - " + this.goodsItem.color,
-      type: this.goodsItem.type,
-      status: this.goodsItem.status,
-      bid: this.goodsItem.id,
     };
+  },
+  computed: {
+    title() {
+      return this.goodsItem.brand + " - " + this.goodsItem.color;
+    },
+    type() {
+      return this.goodsItem.type;
+    },
+    status() {
+      return this.goodsItem.status;
+    },
+    bid() {
+      return this.goodsItem.id;
+    },
   },
   methods: {
     imageLoaded() {

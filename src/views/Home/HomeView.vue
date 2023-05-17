@@ -50,6 +50,7 @@ import BackTop from "components/content/BackTop.vue";
 
 import { getBikes } from "network/home";
 import { debounce } from "@/assets/js/utils";
+import {Toast} from "vant";
 
 export default {
   name: "HomeView",
@@ -103,6 +104,7 @@ export default {
 
   activated() {
     // console.log(this.scrollY);
+    this.getSomeBike();
     this.$refs["scroll"].scrollTo(0, this.scrollY, 0);
     // this.$refs["scroll"].refresh();
   },
@@ -145,7 +147,10 @@ export default {
      */
     getSomeBike() {
       getBikes().then((res) => {
+        this.bikeList = [];
         this.bikeList.push(...res.result);
+      }).catch(err => {
+        Toast(err.data.msg);
       })
     }
   },

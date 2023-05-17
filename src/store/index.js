@@ -12,6 +12,7 @@ export default new Vuex.Store({
     count: 0,
     bikeList: [],
     curStation: {},
+    uid: 0,
   },
   getters,
   mutations,

@@ -14,40 +14,18 @@ export function getBikeInfo(id) {
   });
 }
 
-export function updateBikeInfo(o) {
+export function updateBikeInfo(bike) {
   return haks({
     method: "post",
     url: "/bike/update",
-    params: { ...o },
+    data: { ...bike },
   });
 }
 
 export function addOrder(o) {
   return haks({
-    method: "post",
     url: "/order/add",
-    params: { ...o },
-  });
-}
-
-export function getOrderInfo(id) {
-  return haks({
-    url: "/order/list",
-    params: { id },
-  });
-}
-
-export function updateOrderInfo(o) {
-  return haks({
     method: "post",
-    url: "/order/update",
-    params: { ...o },
-  });
-}
-
-export function addPayment(o) {
-  return haks({
-    url: "/payment/add",
-    params: { ...o },
+    data: { ...o },
   });
 }

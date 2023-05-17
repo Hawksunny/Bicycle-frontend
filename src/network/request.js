@@ -33,7 +33,7 @@ export function haks(config) {
     (err) => {
       // 3.2. 超出 2xx 范围的状态码都会触发该函数
       console.log(err);
-      return Promise.reject(err);
+      return Promise.reject(err.response);
     }
   );
 

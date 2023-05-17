@@ -24,8 +24,8 @@
           <p>颜色: {{item.color}}</p>
         </template>
         <template #tags>
-          <van-tag plain type="success" v-if="item.status === 0">空闲</van-tag>
-          <van-tag plain type="danger" v-else-if="item.status === 1">占用</van-tag>
+          <van-tag plain type="danger" v-if="item.status === 0">占用</van-tag>
+          <van-tag plain type="success" v-else-if="item.status === 1">空闲</van-tag>
           <van-tag plain type="warning" v-else-if="item.status === 2">维修</van-tag>
         </template>
         <template #footer>
@@ -93,8 +93,8 @@
           disabled
       />
       <van-radio-group v-model="curBike.status" direction="horizontal" class="status-group">
-        <van-radio :name="0">空闲</van-radio>
-        <van-radio :name="1">占用</van-radio>
+        <van-radio :name="0">占用</van-radio>
+        <van-radio :name="1">空闲</van-radio>
         <van-radio :name="2">维修</van-radio>
       </van-radio-group>
       <div style="margin: 16px;">

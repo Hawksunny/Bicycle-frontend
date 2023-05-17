@@ -65,16 +65,41 @@
             :rules="[{ required: true, message: '请填写密码' }]"
         />
         <div style="margin: 16px;">
-          <van-button round block type="info">注册</van-button>
+          <van-button round block type="info" @click="showRegister">注册</van-button>
         </div>
       </van-form>
     </van-dialog>
+
+    <van-popup v-model="isShowRegister" round :style="{width:'75%'}">
+      <van-form>
+        <van-field
+            v-model="newUser.username"
+            label="用户名"
+            placeholder="请填写用户名"
+        />
+        <van-field
+            v-model="newUser.telephone"
+            label="电话"
+            placeholder="请填写联系电话"
+        />
+        <van-field
+            v-model="newUser.password"
+            label="密码"
+            type="password"
+            placeholder="请填写密码"
+        />
+        <div style="margin: 16px;">
+          <van-button round block type="primary" @click="register">注册</van-button>
+        </div>
+      </van-form>
+    </van-popup>
   </div>
 </template>
 
 <script>
-import {isTokenExpired, userLogin} from "network/profile";
+import {addUser, isTokenExpired, userLogin} from "network/profile";
 import {Toast, ImagePreview} from "vant";
+import * as types from "@/store/mutaion-types";
 
 export default {
   name: "ProfileView",
@@ -86,6 +111,13 @@ export default {
       password: null,
       loginUser: {},
       pattern: /\d+/,
+      newUser: {
+        username: null,
+        telephone: null,
+        password: null,
+        isStaff: false,
+      },
+      isShowRegister: false,
     }
   },
   computed: {
@@ -108,6 +140,11 @@ export default {
             // 把token和用户信息存进localStorage
             localStorage.setItem("token", res.msg);
             localStorage.setItem("loginUser", JSON.stringify(this.loginUser));
+            this.$store.commit({
+              type: types.SET_UID,
+              uid: this.uid,
+            });
+            localStorage.setItem("uid", this.uid);
           } else {
             Toast(res.msg);
           }
@@ -122,9 +159,28 @@ export default {
       Toast(`再见，${this.loginUser.username}~`);
       localStorage.removeItem("token");
       localStorage.removeItem("loginUser");
+      this.$store.commit({
+        type: types.SET_UID,
+        uid: 0,
+      });
+      localStorage.removeItem("uid");
     },
     imagePreview() {
       ImagePreview(["https://img1.baidu.com/it/u=2132998912,1359357467&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=500"]);
+    },
+    showRegister() {
+      this.newUser.username = null;
+      this.newUser.telephone = null;
+      this.newUser.password = null;
+      this.isShowRegister = true;
+    },
+    register() {
+      addUser(this.newUser).then(res => {
+        if (res.success) {
+          Toast("注册成功，请查询UID后登录");
+          this.isShowRegister = false;
+        }
+      })
     },
   },
   created() {

@@ -1,11 +1,8 @@
 import * as types from "./mutaion-types";
 
 const mutations = {
-  [types.INCREMENT] (state, payload) {
-    state.count += payload.param;
-  },
-  [types.DECREMENT] (state, payload) {
-    state.count -= payload.param;
+  [types.SET_UID] (state, payload) {
+    state.uid = payload.uid;
   },
 
   [types.BIKE_LIST_INIT] (state, payload) {

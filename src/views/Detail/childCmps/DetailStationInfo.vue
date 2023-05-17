@@ -10,7 +10,7 @@
         <p><strong>站点城市</strong></p>
       </div>
       <div class="station">
-        <p>{{ name }}</p>
+        <p>{{ name }} ({{sid}})</p>
         <p><strong>站点名称</strong></p>
       </div>
       <div class="capacity">
@@ -49,6 +49,9 @@ export default {
     },
     capacity() {
       return this.stationInfo.capacity;
+    },
+    sid() {
+      return this.stationInfo.id;
     }
   }
 };
