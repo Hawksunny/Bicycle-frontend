@@ -29,3 +29,11 @@ export function addOrder(o) {
     data: { ...o },
   });
 }
+
+export function addRepair(r) {
+  return haks({
+    url: "/repair/add",
+    method: "post",
+    data: {...r},
+  });
+}

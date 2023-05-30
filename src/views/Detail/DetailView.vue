@@ -15,17 +15,30 @@
       <div v-for="x in 5" :key="x" style="color: transparent">{{ x }}</div>
     </my-scroll>
 
-    <!-- 租赁提交按钮 -->
+    <!-- 底部按钮组 -->
     <div class="button">
-      <van-button
-        type="info"
-        block
-        size="large"
-        loading-text="加载中..."
-        icon="scan"
-        @click="onRentBtnClick"
-        >租它</van-button
-      >
+      <van-row type="flex">
+        <!-- 租赁按钮 -->
+        <van-col span="20">
+          <van-button
+            type="info"
+            block
+            size="large"
+            icon="scan"
+            @click="onRentBtnClick"
+          >租它</van-button>
+        </van-col>
+        <!-- 报修按钮 -->
+        <van-col span="4">
+          <van-button
+            color="#ffa900"
+            block
+            size="large"
+            @click="onRepairBtnClick"
+            :disabled="bikeInfo.status !== 1"
+          >报修</van-button>
+        </van-col>
+      </van-row>
     </div>
     <!-- 待提交表单 -->
     <van-popup v-model="showForm" round :style="{ width: '80%' }">
@@ -112,7 +125,7 @@ import DetailSwiper from "./childCmps/DetailSwiper";
 import DetailBikeInfo from "./childCmps/DetailBikeInfo";
 import DetailStationInfo from "./childCmps/DetailStationInfo";
 
-import {addOrder, getBikeInfo, getStationInfo, updateBikeInfo,} from "network/detail.js";
+import {addOrder, addRepair, getBikeInfo, getStationInfo, updateBikeInfo,} from "network/detail.js";
 
 import Vue from "vue";
 import {Toast} from "vant";
@@ -213,6 +226,28 @@ export default {
       } else {
         Toast("车辆被占用或维修, 无法租用");
       }
+    },
+    onRepairBtnClick() {
+      this.$dialog.confirm({
+        theme: "round-button",
+        title: "单车报修提示",
+        message: "确认要报修该单车？",
+      }).then(() => {
+        this.bikeInfo.status = 2;
+        updateBikeInfo(this.bikeInfo).then(res => {
+          if (res.success) {
+            Toast("已报修");
+          }
+        });
+        addRepair({
+          bikeId: this.iid,
+          reportTime: new Date().toISOString(),
+          reporter: parseInt(localStorage.getItem("uid")),
+          status: 0,
+        });
+      }).catch(() => {
+        Toast("已取消报修");
+      });
     },
     // 订单提交事件处理函数
     onSubmit() {
